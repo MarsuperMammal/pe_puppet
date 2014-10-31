@@ -1,11 +1,14 @@
-class profiles::puppet::master (
-  $certlist_file,
-  $certlist_frequency,
+# a class for servers with the Puppet Enterprise master role installed (aharden@te.com)
+# don't apply directly to roles: use te_puppet::master::ca or te_puppet::master::compile profiles
+class te_puppet::master (
   $r10k_frequency,
 ) {
-  include ::profiles::puppet::common
+  include ::te_puppet::common
   include ::r10k
   include ::r10k::mcollective
+  include ::r10k::webhook
+  include ::r10k::webhook::config
+  Class['::r10k::webhook::config'] -> Class['::r10k::webhook']
   Ini_setting {
     ensure  => present,
     path    => '/etc/puppetlabs/puppet/puppet.conf',
@@ -37,11 +40,5 @@ class profiles::puppet::master (
     command => '. /root/.bashrc; /usr/bin/r10k deploy environment -pv',
     user    => 'root',
     minute  => "*/${r10k_frequency}",
-  }
-  cron { 'export certlist to file':
-    ensure  => present,
-    command => ". /root/.bashrc; /usr/local/bin/puppet cert list --all > ${certlist_file}",
-    user    => 'root',
-    minute  => "*/${certlist_frequency}",
   }
 }

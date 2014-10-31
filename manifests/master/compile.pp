@@ -1,5 +1,6 @@
-class profiles::puppet::master::compile {
-  include ::profiles::puppet::master
+# profile to apply to Puppet Enterprise masters not acting as a CA (aharden@te.com)
+class te_puppet::master::compile {
+  include ::te_puppet::master
 
   ini_setting { 'ca_false':
     ensure  => present,

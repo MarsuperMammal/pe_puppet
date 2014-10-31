@@ -1,4 +1,5 @@
-class profiles::puppet::db::backup (
+# a profile to apply to PuppetDB servers to backup DBs to local disk (aharden@te.com)
+class te_puppet::db::backup (
   $folder = '/tmp/',
   $frequency = '60', # in minutes
 ) {

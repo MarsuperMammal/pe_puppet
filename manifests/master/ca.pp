@@ -1,8 +1,9 @@
-class profiles::puppet::master::ca {
-  include ::profiles::puppet::master
-  include ::r10k::webhook
-  include ::r10k::webhook::config
-  Class['::r10k::webhook::config'] -> Class['::r10k::webhook']
+# profile to include on Puppet Enterprise masters acting as CA (aharden@te.com)
+class te_puppet::master::ca (
+  $certlist_file,
+  $certlist_frequency,
+) {
+  include ::te_puppet::master
 
   ini_setting { 'Enable autosigning':
     ensure  => present,
@@ -28,5 +29,11 @@ class profiles::puppet::master::ca {
     owner  => 'root',
     group  => 'pe-puppet',
     mode   => '0644',
+  }
+  cron { 'export certlist to file':
+    ensure  => present,
+    command => ". /root/.bashrc; /usr/local/bin/puppet cert list --all > ${certlist_file}",
+    user    => 'root',
+    minute  => "*/${certlist_frequency}",
   }
 }

@@ -1,4 +1,5 @@
-class profiles::puppet::db (
+# a profile for servers with the Puppet Enterprise PuppetDB role installed (aharden@te.com)
+class te_puppet::db (
   $certificate_list,
 ) {
   file { '/etc/puppetlabs/puppetdb/certificate-whitelist':

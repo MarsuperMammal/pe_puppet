@@ -1,11 +1,12 @@
-class profiles::puppet::console (
+# profile to be applied to Puppet Enterprise Console servers (aharden@te.com)
+class te_puppet::console (
   $certificate_list,
   $console_auth_pwd,
   $console_db_pwd,
   $ldap_pwd,
   $db_host = 'localhost',
 ) {
-  include ::profiles::puppet::common
+  include ::te_puppet::common
   File {
     owner  => 'pe-auth',
     group  => 'puppet-dashboard',
