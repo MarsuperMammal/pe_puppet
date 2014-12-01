@@ -14,9 +14,21 @@ class te_puppet::master (
     path    => '/etc/puppetlabs/puppet/puppet.conf',
     section => 'main',
   }
+
+  case $::pe_version: {
+    '3.3.2': {
+      $mybasemodulepath = '/opt/puppet/share/puppet/modules'
+      $myservices       = ['pe-httpd']
+    }
+    default: {
+      $mybasemodulepath = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules'
+      $myservices       = ['pe-httpd','pe-puppetserver']
+    }
+  }
+
   ini_setting { 'puppet base module path':
     setting => 'basemodulepath',
-    value   => '/opt/puppet/share/puppet/modules',
+    value   => $mybasemodulepath,
   }
   ini_setting { 'puppet environment path':
     setting => 'environmentpath',
@@ -28,7 +40,7 @@ class te_puppet::master (
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
-    notify => Service['pe-httpd'],
+    notify => Service[$myservices],
   }
   file { 'Symlink to puppet bin for r10k use':
     ensure => link,
