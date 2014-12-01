@@ -16,8 +16,8 @@ class te_puppet::console (
     notify => Service['pe-puppet-dashboard-workers','pe-httpd'],
   }
 
-  case $::puppetversion {
-    '3.6.2 (Puppet Enterprise 3.3.2)': {
+  case $::pe_version {
+    '3.3.2': {
       $database_yml_file = 'database.yml.pe33.erb'
 
       file {'/etc/puppetlabs/console-auth/cas_client_config.yml':
