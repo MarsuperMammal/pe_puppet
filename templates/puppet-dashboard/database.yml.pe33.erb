@@ -1,8 +1,8 @@
 common: &common
-    database: 'console'
-    username: 'console'
+    database: console
+    username: console
     password: '<%= @console_db_pwd %>'
-    host: '<%= @db_host %>'
+    host: <%= @db_host %>
     port: 5432
     adapter: postgresql
 
