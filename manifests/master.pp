@@ -15,7 +15,7 @@ class te_puppet::master (
     section => 'main',
   }
 
-  case $::pe_version: {
+  case $::pe_version {
     '3.3.2': {
       $mybasemodulepath = '/opt/puppet/share/puppet/modules'
       $myservices       = ['pe-httpd']

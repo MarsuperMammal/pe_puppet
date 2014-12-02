@@ -5,7 +5,7 @@ class te_puppet::master::ca (
 ) {
   include ::te_puppet::master
 
-  case $::pe_version: {
+  case $::pe_version {
     '3.3.2': { $myservices = ['pe-httpd'] }
     default: { $myservices = ['pe-httpd','pe-puppetmaster'] }
   }
