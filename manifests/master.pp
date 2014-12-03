@@ -58,4 +58,10 @@ class te_puppet::master (
     user    => 'root',
     minute  => "*/${r10k_frequency}",
   }
+
+  service {'pe-puppetserver':
+    ensure => 'running',
+    enable => true,
+  }
+
 }
