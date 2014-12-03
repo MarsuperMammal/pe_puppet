@@ -7,7 +7,7 @@ class te_puppet::master::ca (
 
   case $::pe_version {
     '3.3.2': { $myservices = ['pe-httpd'] }
-    default: { $myservices = ['pe-httpd','pe-puppetmaster'] }
+    default: { $myservices = ['pe-httpd','pe-puppetserver'] }
   }
 
   ini_setting { 'Enable autosigning':
