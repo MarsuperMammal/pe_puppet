@@ -6,9 +6,10 @@ class te_puppet::master (
   include ::te_puppet::common
   include ::r10k
   include ::r10k::mcollective
-  include ::r10k::webhook
-  include ::r10k::webhook::config
-  Class['::r10k::webhook::config'] -> Class['::r10k::webhook']
+  # r10k webhook disabled until we get it working on Ubuntu 14.04
+  # include ::r10k::webhook
+  # include ::r10k::webhook::config
+  # Class['::r10k::webhook::config'] -> Class['::r10k::webhook']
 
   Ini_setting {
     ensure  => present,
@@ -22,6 +23,11 @@ class te_puppet::master (
       $myservices       = ['pe-httpd']
     }
     default: {
+      service {'pe-puppetserver':
+        ensure => 'running',
+        enable => true,
+      }
+
       $mybasemodulepath = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules'
       $myservices       = ['pe-httpd','pe-puppetserver']
     }
@@ -58,10 +64,4 @@ class te_puppet::master (
     user    => 'root',
     minute  => "*/${r10k_frequency}",
   }
-
-  service {'pe-puppetserver':
-    ensure => 'running',
-    enable => true,
-  }
-
 }
