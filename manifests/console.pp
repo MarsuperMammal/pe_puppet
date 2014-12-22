@@ -34,7 +34,31 @@ class te_puppet::console (
     }
     default: {
       $database_yml_file = 'database.yml.erb'
+
+      # Config file to control session duration
+      # Reference: https://docs.puppetlabs.com/pe/latest/console_config.html
+      file {'/etc/puppetlabs/console-services/conf.d/session-duration.conf':
+        ensure => 'file',
+        source => "puppet:///modules/${module_name}/console-services/session-duration.conf",
+        group  => 'pe-console-services',
+        user   => 'pe-console-services',
+        mode   => '0640',
+        notify => Service['pe-console-services'],
+      }
+
+      service {'pe-console-services':
+        ensure => 'running',
+        enable => true,
+      }
     }
+  }
+
+  cron { '/opt/puppet dashboard certs backup':
+    ensure  => present,
+    command => template("${module}/backup/opt_puppet_certs.erb"),
+    user    => 'root',
+    minute  => 0,
+    hour    => 1,
   }
 
   file {'/etc/puppetlabs/puppet-dashboard/database.yml':
