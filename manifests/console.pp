@@ -55,7 +55,7 @@ class te_puppet::console (
 
   cron { '/opt/puppet dashboard certs backup':
     ensure  => present,
-    command => template("${module}/backup/opt_puppet_certs.erb"),
+    command => template("${module_name}/backup/opt_puppet_certs.erb"),
     user    => 'root',
     minute  => 0,
     hour    => 1,
