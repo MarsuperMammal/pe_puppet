@@ -10,7 +10,7 @@ class te_puppet::common (
 
   cron { '/etc/puppetlabs backup':
     ensure  => present,
-    command => ". /root/.bashrc; tar -czpf /$backup_dir/$::hostname.etc.puppetlabs.tgz /etc/puppetlabs",
+    command => ". /root/.bashrc; tar -czpf $backup_dir/$::hostname.etc.puppetlabs.tgz /etc/puppetlabs",
     user    => 'root',
     hour    => 1,
     minute  => 0,

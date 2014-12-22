@@ -8,6 +8,7 @@ class te_puppet::console (
   $db_host = 'localhost',
 ) {
   include ::te_puppet::common
+  $backup_dir = $::te_puppet::common::backup_dir
 
   File {
     owner  => 'pe-auth',
