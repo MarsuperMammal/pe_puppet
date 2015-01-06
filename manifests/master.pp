@@ -71,4 +71,5 @@ class te_puppet::master (
   rsync::put { "${rsync_dest_host}:${rsync_dest_path}/${::puppetdeployment}/${::hostname}":
     user   => 'root',
     source => '/etc/puppetlabs',
+  }
 }
