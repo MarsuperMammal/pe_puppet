@@ -1,19 +1,12 @@
 # a profile to be referenced by all Puppet Enterprise server roles (aharden@te.com)
 class te_puppet::common (
-  $backup_dir,
+  $rsync_dest_host,
+  $rsync_dest_path,
 ) {
-  file { "$backup_dir":
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-  }
-
-  cron { '/etc/puppetlabs backup':
-    ensure  => present,
-    command => ". /root/.bashrc; tar -czpf $backup_dir/$::hostname.etc.puppetlabs.tgz /etc/puppetlabs",
-    user    => 'root',
-    hour    => 1,
-    minute  => 0,
+  #rsync target for /etc/puppetlabs file backups
+  rsync::put { "${rsync_dest_host}:${rsync_dest_path}/${::puppetdeployment}/${::hostname}/etc/puppetlabs":
+    user   => 'root',
+    source => '/etc/puppetlabs/',
   }
 
   service { 'pe-httpd':

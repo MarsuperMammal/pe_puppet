@@ -6,9 +6,10 @@ class te_puppet::console (
   $console_db_pwd,
   $ldap_pwd,
   $db_host = 'localhost',
+  $rsync_dest_host = $::te_puppet::common::rsync_dest_host,
+  $rsync_dest_path = $::te_puppet::common::rsync_dest_path,
 ) {
   include ::te_puppet::common
-  $backup_dir = $::te_puppet::common::backup_dir
 
   File {
     owner  => 'pe-auth',
@@ -54,14 +55,6 @@ class te_puppet::console (
     }
   }
 
-  cron { '/opt/puppet dashboard certs backup':
-    ensure  => present,
-    command => template("${module_name}/backup/opt_puppet_certs.erb"),
-    user    => 'root',
-    minute  => 0,
-    hour    => 1,
-  }
-
   file {'/etc/puppetlabs/puppet-dashboard/database.yml':
     ensure  => file,
     content => template("${module_name}/puppet-dashboard/$database_yml_file"),
@@ -71,6 +64,13 @@ class te_puppet::console (
   file {'/etc/puppetlabs/console-auth/certificate_authorization.yml':
     ensure  => file,
     content => template("${module_name}/console-auth/certificate_authorization.yml.erb"),
+  }
+
+  # rsync target for /opt/puppet/share/puppet-dashboard/certs file backups
+  rsync::put { "${rsync_dest_host}:${rsync_dest_path}/${::puppetdeployment}/${::hostname}\
+    /opt/puppet/share/puppet-dashboard/certs":
+    user   => 'root',
+    source => '/opt/puppet/share/puppet-dashboard/certs',
   }
 
   service {'pe-puppet-dashboard-workers':

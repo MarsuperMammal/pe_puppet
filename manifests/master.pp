@@ -1,6 +1,8 @@
 # a class for servers with the Puppet Enterprise master role installed (aharden@te.com)
 # don't apply directly to roles: use te_puppet::master::ca or te_puppet::master::compile profiles
 class te_puppet::master (
+  $rsync_dest_host = $::te_puppet::common::rsync_dest_host,
+  $rsync_dest_path = $::te_puppet::common::rsync_dest_path,
   $r10k_frequency,
 ) {
   include ::te_puppet::common
@@ -64,4 +66,9 @@ class te_puppet::master (
     user    => 'root',
     minute  => "*/${r10k_frequency}",
   }
+
+  #rsync target for /etc/puppetlabs file backups
+  rsync::put { "${rsync_dest_host}:${rsync_dest_path}/${::puppetdeployment}/${::hostname}":
+    user   => 'root',
+    source => '/etc/puppetlabs',
 }
