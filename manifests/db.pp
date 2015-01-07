@@ -10,9 +10,9 @@ class te_puppet::db (
     mode    => '0600',
     notify  => Service['pe-puppetdb'],
   }
-  #rsync target for /etc/puppetlabs file backups
+  #rsync target for DB file backups
   rsync::put { "${rsync_dest_host}:${rsync_dest_path}/${::puppetdeployment}/${::hostname}":
     user   => 'root',
-    source => '/etc/puppetlabs',
+    source => ${::te_puppet::db::backup::folder},
   }
 }
