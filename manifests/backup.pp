@@ -1,7 +1,7 @@
 # profile to be applied to the Puppet project backup server (aharden@te.com)
 # should be included in roles::puppet::backup
 class te_control::backup (
-  $backup_path = $::te_control::common::rsync_dest_path,
+  $backup_path,
 ) {
   include ::rsync
   include ::rsync::server
