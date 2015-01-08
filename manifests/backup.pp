@@ -3,6 +3,8 @@
 class te_control::backup (
   $backup_path = $::te_control::common::rsync_dest_path,
 ) {
+  include ::rsync
+
   # setup PE server backup repo
   file { $backup_path:
     ensure => directory,
