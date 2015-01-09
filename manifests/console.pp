@@ -6,10 +6,11 @@ class te_puppet::console (
   $console_db_pwd,
   $ldap_pwd,
   $db_host = 'localhost',
-  $rsync_dest_host = $::te_puppet::common::rsync_dest_host,
-  $rsync_dest_path = $::te_puppet::common::rsync_dest_path,
 ) {
   include ::te_puppet::common
+  include ::rsync
+  $rsync_dest_host = $::te_puppet::common::rsync_dest_host
+  $rsync_dest_path = $::te_puppet::common::rsync_dest_path
 
   File {
     owner  => 'pe-auth',
