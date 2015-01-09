@@ -5,6 +5,7 @@ class te_puppet::backup (
 ) {
   include ::rsync
   include ::rsync::server
+
   # setup PE server backup repo
   file { $backup_path:
     ensure => directory,
@@ -15,5 +16,9 @@ class te_puppet::backup (
   rsync::server::module { 'PE_repo':
     path    => $backup_path,
     require => File[$backup_path],
+  }
+
+  service { 'rsync':
+    ensure => 'running',
   }
 }
