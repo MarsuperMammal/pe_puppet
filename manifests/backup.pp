@@ -20,5 +20,6 @@ class te_puppet::backup (
 
   service { 'rsync':
     ensure => 'running',
+    enable => true,
   }
 }

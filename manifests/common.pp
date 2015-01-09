@@ -7,6 +7,7 @@ class te_puppet::common (
 
   service { 'rsync':
     ensure => 'running',
+    enable => true,
   }
 
   #rsync target for /etc/puppetlabs file backups
@@ -16,7 +17,7 @@ class te_puppet::common (
   }
 
   service { 'pe-httpd':
-    ensure => running,
+    ensure => 'running',
     enable => true,
   }
 }
