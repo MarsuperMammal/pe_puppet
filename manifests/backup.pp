@@ -2,16 +2,26 @@
 # should be included in roles::puppet::backup
 class te_puppet::backup (
   $backup_path,
+  $destinations,
 ) {
   include ::rsync
   include ::rsync::server
 
   # setup PE server backup repo
-  file { $backup_path:
+
+  File {
     ensure => directory,
     owner  => 'root',
     group  => 'root',
   }
+
+  file { $backup_path: }
+
+  #source: http://stackoverflow.com/questions/21882525/puppet-recursive-directories-creation
+  define create_dirs {
+    file { "$backup_path/$title": }
+  }
+  create_dirs { $destinations: }
 
   rsync::server::module { 'PE_repo':
     path    => $backup_path,

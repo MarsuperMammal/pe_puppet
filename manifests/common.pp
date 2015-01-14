@@ -12,8 +12,9 @@ class te_puppet::common (
 
   #rsync target for /etc/puppetlabs file backups
   rsync::put { "${rsync_dest_host}:${rsync_dest_path}/${::puppetdeployment}/${::hostname}/etc/puppetlabs":
-    user   => 'root',
-    source => '/etc/puppetlabs/',
+    user    => 'root',
+    keyfile => '/root/.ssh/id_rsa',
+    source  => '/etc/puppetlabs/',
   }
 
   service { 'pe-httpd':
