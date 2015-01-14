@@ -44,7 +44,7 @@ class te_puppet::console (
         ensure => 'file',
         source => "puppet:///modules/${module_name}/console-services/session-duration.conf",
         group  => 'pe-console-services',
-        user   => 'pe-console-services',
+        owner  => 'pe-console-services',
         mode   => '0640',
         notify => Service['pe-console-services'],
       }
