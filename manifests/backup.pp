@@ -18,8 +18,10 @@ class te_puppet::backup (
   file { $backup_path: }
 
   #source: http://stackoverflow.com/questions/21882525/puppet-recursive-directories-creation
-  define myDirectories {
-    file { "$backup_path/$name":
+  define myDirectories (
+    $myBackupPath = $te_puppet::backup::backup_path,
+  ) {
+    file { "$myBackupPath/$name":
       ensure => directory,
     }
   }
