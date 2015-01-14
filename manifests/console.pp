@@ -70,8 +70,9 @@ class te_puppet::console (
   # rsync target for /opt/puppet/share/puppet-dashboard/certs file backups
   rsync::put { "${rsync_dest_host}:${rsync_dest_path}/${::puppetdeployment}/${::hostname}\
     /opt/puppet/share/puppet-dashboard/certs":
-    user   => 'root',
-    source => '/opt/puppet/share/puppet-dashboard/certs',
+    user    => 'root',
+    keyfile => '/root/.ssh/id_rsa.pub',
+    source  => '/opt/puppet/share/puppet-dashboard/certs',
   }
 
   service {'pe-puppet-dashboard-workers':
