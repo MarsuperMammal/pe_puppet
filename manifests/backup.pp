@@ -18,11 +18,12 @@ class te_puppet::backup (
   file { $backup_path: }
 
   #source: http://stackoverflow.com/questions/21882525/puppet-recursive-directories-creation
-  each($destinations) |$directory| {
-    if ! defined (File["$backup_path/$directory"]) {
-      file { "$backup_path/$directory": }
+  define myDirectories {
+    file { "$backup_path/$name":
+      ensure => directory,
     }
   }
+  myDirectories { $destinations: }
 
   rsync::server::module { 'PE_repo':
     path    => $backup_path,
