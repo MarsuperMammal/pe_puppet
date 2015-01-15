@@ -8,6 +8,9 @@ class te_puppet::console (
   $db_host = 'localhost',
 ) {
   include ::te_puppet::common
+  include ::rsync
+  $rsync_dest_host = $::te_puppet::common::rsync_dest_host
+  $rsync_dest_path = $::te_puppet::common::rsync_dest_path
 
   File {
     owner  => 'pe-auth',
@@ -34,6 +37,22 @@ class te_puppet::console (
     }
     default: {
       $database_yml_file = 'database.yml.erb'
+
+      # Config file to control session duration
+      # Reference: https://docs.puppetlabs.com/pe/latest/console_config.html
+      file {'/etc/puppetlabs/console-services/conf.d/session-duration.conf':
+        ensure => 'file',
+        source => "puppet:///modules/${module_name}/console-services/session-duration.conf",
+        group  => 'pe-console-services',
+        owner  => 'pe-console-services',
+        mode   => '0640',
+        notify => Service['pe-console-services'],
+      }
+
+      service {'pe-console-services':
+        ensure => 'running',
+        enable => true,
+      }
     }
   }
 
@@ -46,6 +65,14 @@ class te_puppet::console (
   file {'/etc/puppetlabs/console-auth/certificate_authorization.yml':
     ensure  => file,
     content => template("${module_name}/console-auth/certificate_authorization.yml.erb"),
+  }
+
+  # rsync target for /opt/puppet/share/puppet-dashboard/certs file backups
+  rsync::put { "${rsync_dest_host}:${rsync_dest_path}/${::puppetdeployment}/${::hostname}\
+    /opt/puppet/share/puppet-dashboard/certs":
+    user    => 'root',
+    keyfile => '/root/.ssh/id_rsa.pub',
+    source  => '/opt/puppet/share/puppet-dashboard/certs',
   }
 
   service {'pe-puppet-dashboard-workers':
