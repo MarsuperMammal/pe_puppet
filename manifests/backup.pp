@@ -31,9 +31,4 @@ class te_puppet::backup (
     path    => $backup_path,
     require => File[$backup_path],
   }
-
-  service { 'rsync':
-    ensure => 'running',
-    enable => true,
-  }
 }

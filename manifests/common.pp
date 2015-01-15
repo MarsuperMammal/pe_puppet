@@ -5,11 +5,6 @@ class te_puppet::common (
 ) {
   include ::rsync
 
-  service { 'rsync':
-    ensure => 'running',
-    enable => 'true',
-  }
-
   #rsync target for /etc/puppetlabs file backups
   rsync::put { "${rsync_dest_host}:${rsync_dest_path}/${::puppetdeployment}/${::hostname}/etc/puppetlabs":
     user    => 'root',
