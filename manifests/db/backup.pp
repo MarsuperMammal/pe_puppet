@@ -1,12 +1,13 @@
 # a profile to apply to PuppetDB servers to backup DBs to local disk (aharden@te.com)
 class te_puppet::db::backup (
   $folder = '/tmp/',
-  $frequency = '60', # in minutes
+  $hours = ['1'], # which hours to back up at daily
 ) {
   Cron {
     ensure => present,
     user   => 'pe-postgres',
-    minute => "*/${frequency}",
+    hour   => $hours,
+    minute => '0',
   }
 
   file { $folder:
