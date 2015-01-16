@@ -6,10 +6,9 @@ class te_puppet::master (
   include ::te_puppet::common
   include ::r10k
   include ::r10k::mcollective
-  # r10k webhook disabled until we get it working on Ubuntu 14.04
-  # include ::r10k::webhook
-  # include ::r10k::webhook::config
-  # Class['::r10k::webhook::config'] -> Class['::r10k::webhook']
+  include ::r10k::webhook
+  include ::r10k::webhook::config
+  Class['::r10k::webhook::config'] -> Class['::r10k::webhook']
 
   Ini_setting {
     ensure  => present,
