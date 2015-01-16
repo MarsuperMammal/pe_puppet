@@ -58,7 +58,7 @@ class te_puppet::master (
   }
 
   cron { 'r10k deploy runs':
-    ensure  => present,
+    ensure  => absent,  # while we're testing the webhook
     command => '. /root/.bashrc; /usr/bin/r10k deploy environment -pv',
     user    => 'root',
     minute  => "*/${r10k_frequency}",
