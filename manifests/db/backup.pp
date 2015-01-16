@@ -3,6 +3,11 @@ class te_puppet::db::backup (
   $folder = '/tmp/',
   $hours = ['1'], # which hours to back up at daily
 ) {
+  include ::rsync
+
+  $rsync_dest_host = $::te_puppet::common::rsync_dest_host
+  $rsync_dest_path = $::te_puppet::common::rsync_dest_path
+
   Cron {
     ensure => present,
     user   => 'pe-postgres',
@@ -26,5 +31,11 @@ class te_puppet::db::backup (
   }
   cron { 'Console_auth DB backup':
     command => "/opt/puppet/bin/pg_dump console_auth -f ${folder}console_auth.backup --create",
+  }
+
+  #rsync target for DB file backups
+  rsync::put { "${rsync_dest_host}:${rsync_dest_path}/${::puppetdeployment}/${::hostname}":
+    user   => 'root',
+    source => $folder,
   }
 }
