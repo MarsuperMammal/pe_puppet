@@ -6,10 +6,9 @@ class te_puppet::master (
   include ::te_puppet::common
   include ::r10k
   include ::r10k::mcollective
-  # r10k webhook disabled until we get it working on Ubuntu 14.04
-  # include ::r10k::webhook
-  # include ::r10k::webhook::config
-  # Class['::r10k::webhook::config'] -> Class['::r10k::webhook']
+  include ::r10k::webhook
+  include ::r10k::webhook::config
+  Class['::r10k::webhook::config'] -> Class['::r10k::webhook']
 
   Ini_setting {
     ensure  => present,
@@ -58,8 +57,9 @@ class te_puppet::master (
     path   => '/usr/bin/puppet',
   }
 
+  # deprecated as of PUP-33 (2015-01-20) - remove from next version
   cron { 'r10k deploy runs':
-    ensure  => present,
+    ensure  => absent,
     command => '. /root/.bashrc; /usr/bin/r10k deploy environment -pv',
     user    => 'root',
     minute  => "*/${r10k_frequency}",
