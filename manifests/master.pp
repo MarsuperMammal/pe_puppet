@@ -57,8 +57,9 @@ class te_puppet::master (
     path   => '/usr/bin/puppet',
   }
 
+  # deprecated as of PUP-33 (2015-01-20) - remove from next version
   cron { 'r10k deploy runs':
-    ensure  => absent,  # while we're testing the webhook
+    ensure  => absent,
     command => '. /root/.bashrc; /usr/bin/r10k deploy environment -pv',
     user    => 'root',
     minute  => "*/${r10k_frequency}",
