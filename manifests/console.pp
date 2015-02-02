@@ -4,6 +4,7 @@ class te_puppet::console (
   $certificate_list,
   $console_auth_pwd,
   $console_db_pwd,
+  $dashboard_workers = '2', # default number of dashboard workers
   $ldap_pwd,
   $db_host = 'localhost',
 ) {
@@ -33,6 +34,25 @@ class te_puppet::console (
         content => template("${module_name}/rubycas-server/config.yml.erb"),
         group   => 'pe-auth',
         mode    => '0600',
+      }
+      case $::osfamily {
+        'debian': {
+          file {'/etc/default/pe-puppet-dashboard-workers':
+             ensure => 'file',
+             content => template("${module_name}/puppet-dashboard/pe-puppet-dashboard-workers.pe33.erb"),
+             owner   => 'root',
+             group   =? 'root',
+          }
+        }:
+        'redhat': {
+          file {'/etc/sysconfig/pe-puppet-dashboard-workers':
+            ensure  => 'file',
+            content => template("${module_name}/puppet-dashboard/pe-puppet-dashboard-workers.pe33.erb"),
+            owner   => 'root',
+            group   => 'root',
+          }
+        }
+        default: notify { "No dashboard workers configuration defined for ${::osfamily}." }
       }
     }
     default: {
