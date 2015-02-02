@@ -41,7 +41,7 @@ class te_puppet::console (
              ensure => 'file',
              content => template("${module_name}/puppet-dashboard/pe-puppet-dashboard-workers.pe33.erb"),
              owner   => 'root',
-             group   =? 'root',
+             group   => 'root',
           }
         }:
         'redhat': {
