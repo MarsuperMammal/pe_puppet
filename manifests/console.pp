@@ -43,7 +43,7 @@ class te_puppet::console (
              owner   => 'root',
              group   => 'root',
           }
-        }:
+        }
         'redhat': {
           file {'/etc/sysconfig/pe-puppet-dashboard-workers':
             ensure  => 'file',
