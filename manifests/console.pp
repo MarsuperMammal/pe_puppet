@@ -4,6 +4,7 @@ class te_puppet::console (
   $certificate_list,
   $console_auth_pwd,
   $console_db_pwd,
+  $dashboard_workers = '2', # default number of dashboard workers
   $ldap_pwd,
   $db_host = 'localhost',
 ) {
@@ -17,6 +18,12 @@ class te_puppet::console (
     group  => 'puppet-dashboard',
     mode   => '0640',
     notify => Service['pe-puppet-dashboard-workers','pe-httpd'],
+  }
+
+  case $::osfamily {
+    'debian': { $dashboard_workers_path = '/etc/default/pe-puppet-dashboard-workers' }
+    'redhat': { $dashboard_workers_path = '/etc/sysconfig/pe-puppet-dashboard-workers' }
+    default:  { notify("No dashboard workers configuration defined for ${::osfamily}.") }
   }
 
   case $::pe_version {
@@ -54,6 +61,13 @@ class te_puppet::console (
         enable => true,
       }
     }
+  }
+
+  file { $dashboard_workers_path:
+    ensure => 'file',
+    content => template("${module_name}/puppet-dashboard/pe-puppet-dashboard-workers.erb"),
+    owner   => 'root',
+    group   => 'root',
   }
 
   file {'/etc/puppetlabs/puppet-dashboard/database.yml':
