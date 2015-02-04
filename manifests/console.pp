@@ -23,7 +23,7 @@ class te_puppet::console (
   case $::osfamily {
     'debian': { $dashboard_workers_path = '/etc/default/pe-puppet-dashboard-workers' }
     'redhat': { $dashboard_workers_path = '/etc/sysconfig/pe-puppet-dashboard-workers' }
-    default:  notify { "No dashboard workers configuration defined for ${::osfamily}." }
+    default:  { notify("No dashboard workers configuration defined for ${::osfamily}.") }
   }
 
   case $::pe_version {
