@@ -20,6 +20,12 @@ class te_puppet::console (
     notify => Service['pe-puppet-dashboard-workers','pe-httpd'],
   }
 
+  case $::osfamily {
+    'debian': { $dashboard_workers_path = '/etc/default/pe-puppet-dashboard-workers' }
+    'redhat': { $dashboard_workers_path = '/etc/sysconfig/pe-puppet-dashboard-workers' }
+    default:  notify { "No dashboard workers configuration defined for ${::osfamily}." }
+  }
+
   case $::pe_version {
     '3.3.2': {
       $database_yml_file = 'database.yml.pe33.erb'
@@ -34,25 +40,6 @@ class te_puppet::console (
         content => template("${module_name}/rubycas-server/config.yml.erb"),
         group   => 'pe-auth',
         mode    => '0600',
-      }
-      case $::osfamily {
-        'debian': {
-          file {'/etc/default/pe-puppet-dashboard-workers':
-             ensure => 'file',
-             content => template("${module_name}/puppet-dashboard/pe-puppet-dashboard-workers.pe33.erb"),
-             owner   => 'root',
-             group   => 'root',
-          }
-        }
-        'redhat': {
-          file {'/etc/sysconfig/pe-puppet-dashboard-workers':
-            ensure  => 'file',
-            content => template("${module_name}/puppet-dashboard/pe-puppet-dashboard-workers.pe33.erb"),
-            owner   => 'root',
-            group   => 'root',
-          }
-        }
-        default: notify { "No dashboard workers configuration defined for ${::osfamily}." }
       }
     }
     default: {
@@ -74,6 +61,13 @@ class te_puppet::console (
         enable => true,
       }
     }
+  }
+
+  file { $dashboard_workers_path:
+    ensure => 'file',
+    content => template("${module_name}/puppet-dashboard/pe-puppet-dashboard-workers.erb"),
+    owner   => 'root',
+    group   => 'root',
   }
 
   file {'/etc/puppetlabs/puppet-dashboard/database.yml':
