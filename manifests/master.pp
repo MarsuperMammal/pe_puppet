@@ -22,11 +22,6 @@ class te_puppet::master (
       $myservices       = ['pe-httpd']
     }
     default: {
-      service {'pe-puppetserver':
-        ensure => 'running',
-        enable => true,
-      }
-
       $mybasemodulepath = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules'
       $myservices       = ['pe-httpd','pe-puppetserver']
     }
@@ -55,13 +50,5 @@ class te_puppet::master (
     ensure => link,
     target => '/opt/puppet/bin/puppet',
     path   => '/usr/bin/puppet',
-  }
-
-  # deprecated as of PUP-33 (2015-01-20) - remove from next version
-  cron { 'r10k deploy runs':
-    ensure  => absent,
-    command => '. /root/.bashrc; /usr/bin/r10k deploy environment -pv',
-    user    => 'root',
-    minute  => "*/${r10k_frequency}",
   }
 }

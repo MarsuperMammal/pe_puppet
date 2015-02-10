@@ -41,6 +41,18 @@ class te_puppet::console (
         group   => 'pe-auth',
         mode    => '0600',
       }
+      
+      file { $dashboard_workers_path:
+        ensure => 'file',
+        content => template("${module_name}/puppet-dashboard/pe-puppet-dashboard-workers.erb"),
+        owner   => 'root',
+        group   => 'root',
+      }  
+ 
+      service {'pe-puppet-dashboard-workers':
+        ensure => 'running',
+        enable => true,
+      }   
     }
     default: {
       $database_yml_file = 'database.yml.erb'
@@ -56,13 +68,6 @@ class te_puppet::console (
         notify => Service['pe-console-services'],
       }
     }
-  }
-
-  file { $dashboard_workers_path:
-    ensure => 'file',
-    content => template("${module_name}/puppet-dashboard/pe-puppet-dashboard-workers.erb"),
-    owner   => 'root',
-    group   => 'root',
   }
 
   file {'/etc/puppetlabs/puppet-dashboard/database.yml':
@@ -82,10 +87,5 @@ class te_puppet::console (
     user    => 'root',
     keyfile => '/root/.ssh/id_rsa.pub',
     source  => '/opt/puppet/share/puppet-dashboard/certs',
-  }
-
-  service {'pe-puppet-dashboard-workers':
-    ensure => 'running',
-    enable => true,
   }
 }
