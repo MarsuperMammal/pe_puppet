@@ -55,11 +55,6 @@ class te_puppet::console (
         mode   => '0640',
         notify => Service['pe-console-services'],
       }
-
-      service {'pe-console-services':
-        ensure => 'running',
-        enable => true,
-      }
     }
   }
 
