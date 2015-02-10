@@ -11,9 +11,13 @@ class te_puppet::common (
     keyfile => '/root/.ssh/id_rsa',
     source  => '/etc/puppetlabs/',
   }
-
-  service { 'pe-httpd':
-    ensure => 'running',
-    enable => 'true',
+  
+  case $::pe_version {
+    '3.3.2': {
+      service { 'pe-httpd':
+        ensure => 'running',
+        enable => 'true',
+      }
+    }
   }
 }
