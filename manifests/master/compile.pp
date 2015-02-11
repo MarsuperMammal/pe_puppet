@@ -56,6 +56,5 @@ class te_puppet::master::compile {
         source => "puppet://${::settings::ca_server}/puppet_ssl/certs/ca.pem",
       }
     }
-  default : {}
   }
 }

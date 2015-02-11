@@ -1,4 +1,5 @@
 # a profile for servers with the Puppet Enterprise PuppetDB role installed (aharden@te.com)
+# re-evaluating this management for PE 3.7
 class te_puppet::db (
   $certificate_list,
 ) {
@@ -15,5 +16,4 @@ class te_puppet::db (
       }
     }
   }
-  default: {} # re-evaluating this management for PE 3.7
 }
