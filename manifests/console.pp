@@ -28,7 +28,7 @@ class te_puppet::console (
 
   case $::pe_version {
     '3.3.2': {
-      $database_yml_file = 'database.yml.pe33.erb'
+      #$database_yml_file = 'database.yml.pe33.erb'
 
       file {'/etc/puppetlabs/console-auth/cas_client_config.yml':
         ensure => 'file',
@@ -49,13 +49,18 @@ class te_puppet::console (
         group   => 'root',
       }  
  
+      file {'/etc/puppetlabs/console-auth/certificate_authorization.yml':
+        ensure  => file,
+        content => template("${module_name}/console-auth/certificate_authorization.yml.erb"),
+      }
+
       service {'pe-puppet-dashboard-workers':
         ensure => 'running',
         enable => true,
       }   
     }
     default: {
-      $database_yml_file = 'database.yml.erb'
+      #$database_yml_file = 'database.yml.erb'
 
       # Config file to control session duration
       # Reference: https://docs.puppetlabs.com/pe/latest/console_config.html
@@ -70,16 +75,12 @@ class te_puppet::console (
     }
   }
 
-  file {'/etc/puppetlabs/puppet-dashboard/database.yml':
-    ensure  => file,
-    content => template("${module_name}/puppet-dashboard/$database_yml_file"),
-    owner   => 'puppet-dashboard',
-  }
-
-  file {'/etc/puppetlabs/console-auth/certificate_authorization.yml':
-    ensure  => file,
-    content => template("${module_name}/console-auth/certificate_authorization.yml.erb"),
-  }
+  # removing this management pending review after PE 3.7 deployment
+  #file {'/etc/puppetlabs/puppet-dashboard/database.yml':
+  #  ensure  => file,
+  #  content => template("${module_name}/puppet-dashboard/$database_yml_file"),
+  #  owner   => 'puppet-dashboard',
+  #}
 
   # rsync target for /opt/puppet/share/puppet-dashboard/certs file backups
   rsync::put { "${rsync_dest_host}:${rsync_dest_path}/${::puppetdeployment}/${::hostname}\
