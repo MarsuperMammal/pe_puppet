@@ -27,6 +27,14 @@ class te_puppet::master (
     }
   }
 
+  case $::osfamily {
+    'Debian': {
+      package { 'daemon': # required by r10k webhook
+        ensure => 'latest',
+      }
+    }
+  }
+
   ini_setting { 'puppet base module path':
     setting => 'basemodulepath',
     value   => $mybasemodulepath,
@@ -51,4 +59,5 @@ class te_puppet::master (
     target => '/opt/puppet/bin/puppet',
     path   => '/usr/bin/puppet',
   }
+
 }
