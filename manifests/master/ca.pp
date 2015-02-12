@@ -7,7 +7,17 @@ class te_puppet::master::ca (
   include ::te_puppet::master
 
   case $::pe_version {
-    '3.3.2': { $myservices = ['pe-httpd'] }
+    '3.3.2': { 
+      $myservices = ['pe-httpd']    
+
+      file { "${::settings::confdir}/fileserver.conf":
+        ensure => file,
+        source => "puppet:///modules/${module_name}/puppet-ca/fileserver.conf",
+        owner  => 'root',
+        group  => 'pe-puppet',
+        mode   => '0644',
+      }   
+    }
     default: { $myservices = ['pe-httpd','pe-puppetserver'] }
   }
 
@@ -27,14 +37,6 @@ class te_puppet::master::ca (
     group  => 'pe-puppet',
     mode   => '0640',
     notify => Service[$myservices],
-  }
-
-  file { "${::settings::confdir}/fileserver.conf":
-    ensure => file,
-    source => "puppet:///modules/${module_name}/puppet-ca/fileserver.conf",
-    owner  => 'root',
-    group  => 'pe-puppet',
-    mode   => '0644',
   }
 
   cron { 'export certlist to file':
