@@ -53,7 +53,7 @@ class te_puppet::master (
   }
   
   # daemon is used in r10k webhook on debian/ubuntu
-  case ::osfamily {
+  case $::osfamily {
     'Debian': {
       package { 'daemon':
         ensure => 'latest',
