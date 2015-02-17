@@ -23,7 +23,7 @@ class te_puppet::master (
     }
     default: {
       $mybasemodulepath = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules'
-      $myservices       = ['pe-httpd','pe-puppetserver']
+      $myservices       = ['pe-puppetserver']
     }
   }
 
