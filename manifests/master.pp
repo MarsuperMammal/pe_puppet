@@ -59,13 +59,4 @@ class te_puppet::master (
     target => '/opt/puppet/bin/puppet',
     path   => '/usr/bin/puppet',
   }
- 
-  # daemon is used in r10k webhook on debian/ubuntu
-  case $::osfamily {
-    'Debian': {
-      package { 'daemon':
-        ensure => 'latest',
-      }
-    }
-  }
 }
