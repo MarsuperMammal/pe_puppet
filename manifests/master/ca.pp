@@ -18,7 +18,7 @@ class te_puppet::master::ca (
         mode   => '0644',
       }   
     }
-    default: { $myservices = ['pe-httpd','pe-puppetserver'] }
+    default: { $myservices = ['pe-puppetserver'] }
   }
 
   ini_setting { 'Enable autosigning':
