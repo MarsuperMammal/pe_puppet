@@ -23,7 +23,15 @@ class te_puppet::master (
     }
     default: {
       $mybasemodulepath = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules'
-      $myservices       = ['pe-httpd','pe-puppetserver']
+      $myservices       = ['pe-puppetserver']
+    }
+  }
+
+  case $::osfamily {
+    'Debian': {
+      package { 'daemon': # required by r10k webhook
+        ensure => 'latest',
+      }
     }
   }
 
@@ -51,7 +59,7 @@ class te_puppet::master (
     target => '/opt/puppet/bin/puppet',
     path   => '/usr/bin/puppet',
   }
-  
+ 
   # daemon is used in r10k webhook on debian/ubuntu
   case $::osfamily {
     'Debian': {
