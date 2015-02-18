@@ -1,5 +1,7 @@
-# a class for servers with the Puppet Enterprise master role installed (aharden@te.com)
-# don't apply directly to roles: use te_puppet::master::ca or te_puppet::master::compile profiles
+# a class for servers with the Puppet Enterprise master role installed
+# Alex Harden (aharden@te.com)
+# don't apply directly to roles:
+#   use te_puppet::master::ca or te_puppet::master::compile profiles
 class te_puppet::master (
   $r10k_frequency,
 ) {
@@ -33,6 +35,7 @@ class te_puppet::master (
         ensure => 'latest',
       }
     }
+    default: {}
   }
 
   ini_setting { 'puppet base module path':
