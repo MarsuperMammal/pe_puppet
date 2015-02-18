@@ -21,9 +21,15 @@ class te_puppet::console (
   }
 
   case $::osfamily {
-    'debian': { $dashboard_workers_path = '/etc/default/pe-puppet-dashboard-workers' }
-    'redhat': { $dashboard_workers_path = '/etc/sysconfig/pe-puppet-dashboard-workers' }
-    default:  { notify("No dashboard workers configuration defined for ${::osfamily}.") }
+    'debian': {
+      $dashboard_workers_path = '/etc/default/pe-puppet-dashboard-workers'
+    }
+    'redhat': {
+      $dashboard_workers_path = '/etc/sysconfig/pe-puppet-dashboard-workers'
+    }
+    default:  {
+      notify("No dashboard workers configuration defined for ${::osfamily}.")
+    }
   }
 
   case $::pe_version {
@@ -41,14 +47,14 @@ class te_puppet::console (
         group   => 'pe-auth',
         mode    => '0600',
       }
-      
+
       file { $dashboard_workers_path:
-        ensure => 'file',
+        ensure  => 'file',
         content => template("${module_name}/puppet-dashboard/pe-puppet-dashboard-workers.erb"),
         owner   => 'root',
         group   => 'root',
-      }  
- 
+      }
+
       file {'/etc/puppetlabs/console-auth/certificate_authorization.yml':
         ensure  => file,
         content => template("${module_name}/console-auth/certificate_authorization.yml.erb"),
@@ -57,7 +63,7 @@ class te_puppet::console (
       service {'pe-puppet-dashboard-workers':
         ensure => 'running',
         enable => true,
-      }   
+      }
     }
     default: {
       #$database_yml_file = 'database.yml.erb'

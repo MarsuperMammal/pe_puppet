@@ -18,7 +18,6 @@ class te_puppet::agent (
     section => 'main',
     notify  => Service['pe-puppet'],
   }
-  
   ini_setting { 'puppet master server setting':
     setting => 'server',
     value   => $server,

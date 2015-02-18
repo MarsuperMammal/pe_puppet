@@ -7,8 +7,8 @@ class te_puppet::master::ca (
   include ::te_puppet::master
 
   case $::pe_version {
-    '3.3.2': { 
-      $myservices = ['pe-httpd']    
+    '3.3.2': {
+      $myservices = ['pe-httpd']
 
       file { "${::settings::confdir}/fileserver.conf":
         ensure => file,
@@ -16,7 +16,7 @@ class te_puppet::master::ca (
         owner  => 'root',
         group  => 'pe-puppet',
         mode   => '0644',
-      }   
+      }
     }
     default: { $myservices = ['pe-puppetserver'] }
   }

@@ -57,4 +57,5 @@ class te_puppet::master::compile {
       }
     }
   }
+  default: {}
 }
