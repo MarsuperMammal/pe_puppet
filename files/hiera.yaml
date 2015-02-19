@@ -6,6 +6,7 @@
   - "nodes/%{clientcert}"
   - "osfamilies/%{osfamily}"
   - "puppetdeployment/%{puppetdeployment}"
+  - "adsites/%{adsite}"
   - "common"
 
 :yaml:
