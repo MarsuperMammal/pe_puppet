@@ -1,7 +1,20 @@
-# profile to apply to Puppet Enterprise masters not acting as a CA (aharden@te.com)
-# deprecated as of PE 3.7: https://docs.puppetlabs.com/pe/latest/install_multimaster.html
-class te_puppet::master::compile {
+# profile to apply to Puppet Enterprise masters not acting as a CA
+# Alex Harden (aharden@te.com)
+# PE 3.7: https://docs.puppetlabs.com/pe/latest/install_multimaster.html
+class te_puppet::master::compile (
+  $license_end_date,
+  $license_nodes,
+  ) {
   include ::te_puppet::master
+
+  #PE license file
+  file { '/etc/puppetlabs/license.key':
+    ensure  => 'file',
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    content => template("${module_name}/license.key.erb"),
+  }
 
   case $::pe_version {
     '3.3.2': {
@@ -56,6 +69,6 @@ class te_puppet::master::compile {
         source => "puppet://${::settings::ca_server}/puppet_ssl/certs/ca.pem",
       }
     }
-  }
   default: {}
+  }
 }
