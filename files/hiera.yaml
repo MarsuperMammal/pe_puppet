@@ -4,6 +4,7 @@
   - eyaml
 :hierarchy:
   - "nodes/%{clientcert}"
+  - "adsites/%{adsite}"
   - "osfamilies/%{osfamily}"
   - "puppetdeployment/%{puppetdeployment}"
   - "common"
