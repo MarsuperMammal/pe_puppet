@@ -7,7 +7,7 @@ class te_puppet::master::compile (
   ) {
   include ::te_puppet::master
 
-  #PE license file
+  # PE license file
   file { '/etc/puppetlabs/license.key':
     ensure  => 'file',
     mode    => '0644',
@@ -16,16 +16,17 @@ class te_puppet::master::compile (
     content => template("${module_name}/license.key.erb"),
   }
 
+  # don't serve as a Puppet CA
+  ini_setting { 'ca_false':
+    ensure  => present,
+    path    => $::settings::config,
+    section => 'main',
+    setting => 'ca',
+    value   => false,
+  }
+
   case $::pe_version {
     '3.3.2': {
-
-      ini_setting { 'ca_false':
-        ensure  => present,
-        path    => $::settings::config,
-        section => 'main',
-        setting => 'ca',
-        value   => false,
-      }
 
       File {
         ensure => file,
