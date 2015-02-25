@@ -7,6 +7,13 @@ class te_puppet::master::compile (
   ) {
   include ::te_puppet::master
 
+  File {
+    ensure => file,
+    owner  => 'pe-puppet',
+    group  => 'pe-puppet',
+    mode   => '0644',
+  }
+
   # PE license file
   file { '/etc/puppetlabs/license.key':
     ensure  => 'file',
@@ -25,26 +32,23 @@ class te_puppet::master::compile (
     value   => false,
   }
 
-  # r10k webhook mcollective files:
-  # https://github.com/acidprime/r10k#install-mcollective-support-for-post-receive-hooks
-
-  File {
-    ensure => file,
-    owner  => 'pe-puppet',
-    group  => 'pe-puppet',
-    mode   => '0644',
-  }
-
+  # backup of CA server files
   file { "${::settings::confdir}/ssl/ca":
     ensure => directory,
   }
 
   file { "${::settings::confdir}/ssl/ca/ca_crl.pem":
     ensure => file,
-    source => 'puppet:///puppet_ssl/ca/ca_crl.pem',
-    notify => Service['pe-httpd'],
+    source => "puppet://${::settings::ca_server}/puppet_ssl/ca/ca_crl.pem",
+    notify => Service['pe-puppetmaster'],
   }
 
+  file { "${::settings::ssldir}/certs/ca.pem":
+    source => "puppet://${::settings::ca_server}/puppet_ssl/certs/ca.pem",
+  }
+
+  # r10k mcollective files:
+  # https://github.com/acidprime/r10k#install-mcollective-support-for-post-receive-hooks
   file { "${::settings::ssldir}/public_keys/pe-internal-mcollective-servers.pem":
     source => "puppet://${::settings::ca_server}/puppet_ssl/public_keys/pe-internal-mcollective-servers.pem",
   }
@@ -66,7 +70,4 @@ class te_puppet::master::compile (
     source => "puppet://${::settings::ca_server}/puppet_ssl/certs/pe-internal-mcollective-servers.pem",
   }
 
-  file { "${::settings::ssldir}/certs/ca.pem":
-    source => "puppet://${::settings::ca_server}/puppet_ssl/certs/ca.pem",
-  }
 }
