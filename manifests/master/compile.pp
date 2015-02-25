@@ -25,51 +25,48 @@ class te_puppet::master::compile (
     value   => false,
   }
 
-  case $::pe_version {
-    '3.3.2': {
+  # r10k webhook mcollective files:
+  # https://github.com/acidprime/r10k#install-mcollective-support-for-post-receive-hooks
 
-      File {
-        ensure => file,
-        owner  => 'pe-puppet',
-        group  => 'pe-puppet',
-        mode   => '0644',
-      }
+  File {
+    ensure => file,
+    owner  => 'pe-puppet',
+    group  => 'pe-puppet',
+    mode   => '0644',
+  }
 
-      file { "${::settings::confdir}/ssl/ca":
-        ensure => directory,
-      }
+  file { "${::settings::confdir}/ssl/ca":
+    ensure => directory,
+  }
 
-      file { "${::settings::confdir}/ssl/ca/ca_crl.pem":
-        ensure => file,
-        source => 'puppet:///puppet_ssl/ca/ca_crl.pem',
-        notify => Service['pe-httpd'],
-      }
+  file { "${::settings::confdir}/ssl/ca/ca_crl.pem":
+    ensure => file,
+    source => 'puppet:///puppet_ssl/ca/ca_crl.pem',
+    notify => Service['pe-httpd'],
+  }
 
-      file { "${::settings::ssldir}/public_keys/pe-internal-mcollective-servers.pem":
-        source => "puppet://${::settings::ca_server}/puppet_ssl/public_keys/pe-internal-mcollective-servers.pem",
-      }
+  file { "${::settings::ssldir}/public_keys/pe-internal-mcollective-servers.pem":
+    source => "puppet://${::settings::ca_server}/puppet_ssl/public_keys/pe-internal-mcollective-servers.pem",
+  }
 
-      file { "${::settings::ssldir}/public_keys/pe-internal-peadmin-mcollective-client.pem":
-        source => "puppet://${::settings::ca_server}/puppet_ssl/public_keys/pe-internal-peadmin-mcollective-client.pem",
-      }
+  file { "${::settings::ssldir}/public_keys/pe-internal-peadmin-mcollective-client.pem":
+    source => "puppet://${::settings::ca_server}/puppet_ssl/public_keys/pe-internal-peadmin-mcollective-client.pem",
+  }
 
-      file { "${::settings::ssldir}/public_keys/pe-internal-puppet-console-mcollective-client.pem":
-        source => "puppet://${::settings::ca_server}/puppet_ssl/public_keys/pe-internal-puppet-console-mcollective-client.pem",
-      }
+  file { "${::settings::ssldir}/public_keys/pe-internal-puppet-console-mcollective-client.pem":
+    source => "puppet://${::settings::ca_server}/puppet_ssl/public_keys/pe-internal-puppet-console-mcollective-client.pem",
+  }
 
-      file { "${::settings::ssldir}/private_keys/pe-internal-mcollective-servers.pem":
-        mode   => '0640',
-        source => "puppet://${::settings::ca_server}/puppet_ssl/private_keys/pe-internal-mcollective-servers.pem",
-      }
+  file { "${::settings::ssldir}/private_keys/pe-internal-mcollective-servers.pem":
+    mode   => '0640',
+    source => "puppet://${::settings::ca_server}/puppet_ssl/private_keys/pe-internal-mcollective-servers.pem",
+  }
 
-      file { "${::settings::ssldir}/certs/pe-internal-mcollective-servers.pem":
-        source => "puppet://${::settings::ca_server}/puppet_ssl/certs/pe-internal-mcollective-servers.pem",
-      }
+  file { "${::settings::ssldir}/certs/pe-internal-mcollective-servers.pem":
+    source => "puppet://${::settings::ca_server}/puppet_ssl/certs/pe-internal-mcollective-servers.pem",
+  }
 
-      file { "${::settings::ssldir}/certs/ca.pem":
-        source => "puppet://${::settings::ca_server}/puppet_ssl/certs/ca.pem",
-      }
-    }
-  default: {}
+  file { "${::settings::ssldir}/certs/ca.pem":
+    source => "puppet://${::settings::ca_server}/puppet_ssl/certs/ca.pem",
   }
 }
