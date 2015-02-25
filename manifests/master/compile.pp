@@ -38,9 +38,7 @@ class te_puppet::master::compile (
   }
 
   file { "${::settings::confdir}/ssl/ca/ca_crl.pem":
-    ensure => file,
     source => "puppet://${::settings::ca_server}/puppet_ssl/ca/ca_crl.pem",
-    notify => Service['pe-puppetmaster'],
   }
 
   file { "${::settings::ssldir}/certs/ca.pem":
