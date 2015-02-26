@@ -33,17 +33,17 @@ class te_puppet::master::compile (
   }
 
   # backup of CA server files
-  file { "${::settings::confdir}/ssl/ca":
-    ensure => directory,
-  }
+  #file { "${::settings::confdir}/ssl/ca":
+  #  ensure => directory,
+  #}
 
-  file { "${::settings::confdir}/ssl/ca/ca_crl.pem":
-    source => "puppet://${::settings::ca_server}/puppet_ssl/ca/ca_crl.pem",
-  }
+  #file { "${::settings::confdir}/ssl/ca/ca_crl.pem":
+  #  source => "puppet://${::settings::ca_server}/puppet_ssl/ca/ca_crl.pem",
+  #}
 
-  file { "${::settings::ssldir}/certs/ca.pem":
-    source => "puppet://${::settings::ca_server}/puppet_ssl/certs/ca.pem",
-  }
+  #file { "${::settings::ssldir}/certs/ca.pem":
+  #  source => "puppet://${::settings::ca_server}/puppet_ssl/certs/ca.pem",
+  #}
 
   # r10k mcollective files:
   # https://github.com/acidprime/r10k#install-mcollective-support-for-post-receive-hooks
