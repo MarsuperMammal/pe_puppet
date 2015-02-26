@@ -23,14 +23,21 @@ class te_puppet::db::backup (
   }
 
   # cron jobs to produce hourly DB snapshots on disk
-  cron { 'PuppetDB backup':
-    command => "/opt/puppet/bin/pg_dump pe-puppetdb -f ${folder}pe-puppetdb.backup --create",
-  }
+  # https://docs.puppetlabs.com/pe/3.7/maintain_console-db.html#database-backups
   cron { 'Console DB backup':
-    command => "/opt/puppet/bin/pg_dump console -f ${folder}console.backup --create",
+    command => "/opt/puppet/bin/pg_dump -Fc -C -c console -f ${folder}console.backup --create",
   }
-  cron { 'Console_auth DB backup':
-    command => "/opt/puppet/bin/pg_dump console_auth -f ${folder}console_auth.backup --create",
+  cron { 'Activity DB backup':
+    command => "/opt/puppet/bin/pg_dump -Fc -C -c pe-activity -f ${folder}pe-activity.backup --create",
+  }
+  cron { 'Classifier DB backup':
+    command => "/opt/puppet/bin/pg_dump -Fc -C -c pe-classifier -f ${folder}pe-classifier.backup --create",
+  }
+  cron { 'RBAC DB backup':
+    command => "/opt/puppet/bin/pg_dump -Fc -C -c pe-rbac -f ${folder}pe-rbac.backup --create",
+  }
+  cron { 'PuppetDB backup':
+    command => "/opt/puppet/bin/pg_dump -Fc -C -c pe-puppetdb -f ${folder}pe-puppetdb.backup --create",
   }
 
   #rsync target for DB file backups
