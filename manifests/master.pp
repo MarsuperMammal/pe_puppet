@@ -5,7 +5,6 @@
 class te_puppet::master (
   $r10k_frequency = undef,
 ) {
-  include ::te_puppet::common
   include ::r10k
   include ::r10k::mcollective
   include ::r10k::webhook
@@ -16,17 +15,6 @@ class te_puppet::master (
     ensure  => present,
     path    => '/etc/puppetlabs/puppet/puppet.conf',
     section => 'main',
-  }
-
-  case $::pe_version {
-    '3.3.2': {
-      $mybasemodulepath = '/opt/puppet/share/puppet/modules'
-      $myservices       = ['pe-httpd']
-    }
-    default: {
-      $mybasemodulepath = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules'
-      $myservices       = ['pe-puppetserver']
-    }
   }
 
   case $::osfamily {
@@ -40,7 +28,7 @@ class te_puppet::master (
 
   ini_setting { 'puppet base module path':
     setting => 'basemodulepath',
-    value   => $mybasemodulepath,
+    value   => '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules',
   }
 
   ini_setting { 'puppet environment path':
@@ -54,7 +42,7 @@ class te_puppet::master (
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
-    notify => Service[$myservices],
+    notify => 'pe-puppetserver',
   }
 
   file { 'Symlink to puppet bin for r10k use':
