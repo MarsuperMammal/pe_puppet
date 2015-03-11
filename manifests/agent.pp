@@ -6,7 +6,7 @@ class te_puppet::agent (
   $ensure = 'running',  # default state of agent service
   $enable = true,       # default startup of agent service
 ) {
-  include te_puppet::agent::install
+  #include te_puppet::agent::install
 
   if $::osfamily == 'windows' {
     $appdata = regsubst($::common_appdata,'\\','/','G')
