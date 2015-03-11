@@ -7,7 +7,7 @@ class te_puppet::agent (
   $enable = true,       # default startup of agent service
 ) {
   include te_puppet::agent::install
-  
+
   if $::osfamily == 'windows' {
     $appdata = regsubst($::common_appdata,'\\','/','G')
     $confdir = "${appdata}/PuppetLabs/puppet/etc"
