@@ -3,7 +3,7 @@
 # don't apply directly to roles:
 #   use te_puppet::master::ca or te_puppet::master::compile profiles
 class te_puppet::master (
-  $r10k_frequency,
+  $r10k_frequency = undef,
 ) {
   include ::te_puppet::common
   include ::r10k
