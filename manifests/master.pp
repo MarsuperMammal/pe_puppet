@@ -62,4 +62,13 @@ class te_puppet::master (
     target => '/opt/puppet/bin/puppet',
     path   => '/usr/bin/puppet',
   }
+
+  if $r10k_frequency {
+    cron { 'r10k deploy runs':
+      ensure  => present,
+      command => '. /root/.bashrc; /usr/bin/r10k deploy environment -pv',
+      user    => 'root',
+      minute  => "*/${r10k_frequency}",
+    }
+  }
 }
