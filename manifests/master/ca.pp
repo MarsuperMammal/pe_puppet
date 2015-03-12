@@ -12,7 +12,7 @@ class te_puppet::master::ca (
     section => 'main',
     setting => 'autosign',
     value   => '$confdir/autosign.conf',
-    notify  => 'pe-puppetserver',
+    notify  => Service['pe-puppetserver'],
   }
 
   file { "${::settings::confdir}/autosign.conf":
@@ -21,7 +21,7 @@ class te_puppet::master::ca (
     owner  => 'pe-puppet',
     group  => 'pe-puppet',
     mode   => '0640',
-    notify => 'pe-puppetserver',
+    notify => Service['pe-puppetserver'],
   }
 
   file { "${::settings::confdir}/fileserver.conf":
@@ -31,7 +31,7 @@ class te_puppet::master::ca (
     group  => 'pe-puppet',
     mode   => '0644',
   }
-  
+
   cron { 'export certlist to file':
     ensure  => present,
     command => ". /root/.bashrc; /usr/local/bin/puppet cert list --all > ${certlist_file}",
