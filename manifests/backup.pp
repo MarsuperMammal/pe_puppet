@@ -2,7 +2,6 @@
 # should be included in roles::puppet::backup
 class te_puppet::backup (
   $backup_path,
-  #  $destinations,
 ) {
   include ::rsync
   include ::rsync::server

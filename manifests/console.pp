@@ -24,13 +24,6 @@ class te_puppet::console (
     }
   }
 
-  file { $dashboard_workers_path:
-    ensure  => 'file',
-    content => template("${module_name}/puppet-dashboard/pe-puppet-dashboard-workers.erb"),
-    owner   => 'root',
-    group   => 'root',
-  }
-
   file {'/etc/puppetlabs/puppet-dashboard/database.yml':
     ensure  => file,
     content => template("${module_name}/puppet-dashboard/database.yml.erb"),
