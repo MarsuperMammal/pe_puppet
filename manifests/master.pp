@@ -42,7 +42,7 @@ class te_puppet::master (
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
-    notify => 'pe-puppetserver',
+    notify => Service['pe-puppetserver'],
   }
 
   file { 'Symlink to puppet bin for r10k use':
