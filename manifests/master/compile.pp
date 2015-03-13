@@ -31,17 +31,4 @@ class te_puppet::master::compile (
     setting => 'ca',
     value   => false,
   }
-
-  # backup of CA server files
-  file { "${::settings::confdir}/ssl/ca":
-    ensure => directory,
-  }
-
-  file { "${::settings::confdir}/ssl/ca/ca_crl.pem":
-    source => "puppet://${::settings::ca_server}/puppet_ssl/ca/ca_crl.pem",
-  }
-
-  file { "${::settings::ssldir}/certs/ca.pem":
-    source => "puppet://${::settings::ca_server}/puppet_ssl/certs/ca.pem",
-  }
 }
