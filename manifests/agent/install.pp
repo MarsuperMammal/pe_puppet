@@ -3,7 +3,7 @@
 # (aharden@te.com)
 class te_puppet::agent::install (
   $source = undef,
-  $version,
+  $version = undef,
   ) {
   $agent = "${::operatingsystem}-${::operatingsystemreleasee}-${::architecture}"
 
@@ -69,7 +69,7 @@ class te_puppet::agent::install (
     }
   }
   package { $package_name:
-    ensure          => $version,
+    ensure          => 'latest',
     provider        => $provider,
     source          => $package_source,
     install_options => $install_options,
