@@ -69,7 +69,7 @@ class te_puppet::agent::install (
     }
   }
   package { $package_name:
-    ensure          => 'latest',
+    ensure          => $version,
     provider        => $provider,
     source          => $package_source,
     install_options => $install_options,
