@@ -2,7 +2,7 @@
 # Note: source and version variables must be stored in osfamily hieradata
 # (aharden@te.com)
 class te_puppet::agent::install (
-  $source,
+  $source = undef,
   $version,
   ) {
   $agent = "${::operatingsystem}-${::operatingsystemreleasee}-${::architecture}"
