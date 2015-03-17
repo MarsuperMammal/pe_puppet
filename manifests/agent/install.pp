@@ -11,17 +11,30 @@ class te_puppet::agent::install (
     'aix':     {}
     'debian':  {
       # add PE server as apt source
-      apt::source { 'puppet-enterprise-installer':
-        location   => "https:/${::settings::server}:8140/packages/current/${agent}",
-        repos      => 'main', #?
-        key        => '', #? how to get this from the PGP public key?
-        key_server => 'pgp.mit.edu', # copied from puppetlabs/apt exanple
+      file { '/etc/apt/puppet-enterprise.gpg.key':
+        ensure => 'file',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => "puppet:///modules/${module_name}/puppet-enterprise.gpg.key",
       }
+
+      apt_key { 'puppet-enterprise':
+        ensure => 'present',
+        id     => '4BD6EC30',
+        source => '/etc/apt/puppet-enterprise.gpg.key',
+      }
+
+      apt::source { 'puppet-enterprise':
+        location => "https:/${::settings::server}:8140/packages/current/${agent}",
+        repos    => './',
+      }
+
       case $::architecture {
         'amd64': {
           $package_name    = 'pe-agent'
           $provider        = 'apt' # default for debian/ubuntu OS
-          $package_source  = 'puppet-enterprise-installer'
+          $package_source  = 'puppet-enterprise'
           $install_options = undef
         }
         default: {
@@ -56,7 +69,7 @@ class te_puppet::agent::install (
     }
   }
   package { $package_name:
-    ensure          => 'installed',
+    ensure          => 'latest',
     provider        => $provider,
     source          => $package_source,
     install_options => $install_options,
