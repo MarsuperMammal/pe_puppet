@@ -5,7 +5,8 @@ class te_puppet::agent::install (
   $source = undef,
   $version = undef,
   ) {
-  $agent = "${::operatingsystem}-${::operatingsystemreleasee}-${::architecture}"
+  $myoperatingsystem = downcase($::operatingsystem)
+  $agent = "${myoperatingsystem}-${::operatingsystemrelease}-${::architecture}")
 
   case $::osfamily {
     'aix':     {}
