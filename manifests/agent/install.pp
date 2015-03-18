@@ -16,6 +16,8 @@ class te_puppet::agent::install (
     'aix':     {}
     'debian':  {
       # add PE server as apt source
+      $myensure = 'latest'
+
       file { '/etc/apt/puppet-enterprise.gpg.key':
         ensure => 'file',
         owner  => 'root',
@@ -57,6 +59,8 @@ class te_puppet::agent::install (
     'redhat':  {}
     'solaris': {}
     'windows': {
+      $myensure = $version
+
       case $::architecture {
         'x86': {
           $package_msi  = "puppet-enterprise-${version}.msi"
@@ -81,7 +85,7 @@ class te_puppet::agent::install (
     }
   }
   package { $package_name:
-    ensure          => 'latest',
+    ensure          => $myensure,
     provider        => $provider,
     source          => $package_source,
     install_options => $install_options,
