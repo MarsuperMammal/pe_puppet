@@ -6,7 +6,7 @@ class te_puppet::agent::install (
   $version = undef,
   ) {
   # build agent string
-  # reference:
+  # reference: https://docs.puppetlabs.com/pe/latest/install_agents.html#about-the-platform-specific-install-script
   $myoperatingsystem = downcase($::operatingsystem)
   $agent = "${myoperatingsystem}-${::operatingsystemrelease}-${::architecture}"
 
@@ -28,9 +28,16 @@ class te_puppet::agent::install (
         source => '/etc/apt/puppet-enterprise.gpg.key',
       }
 
+      apt::conf { 'puppet-enterprise':
+        priority => '90',
+        content  => 'Acquire::https::pptappp05.tycoelectronics.net::Verify-Peer false;\nAcquire::http::Proxy::pptappp05.tycoelectronics.net DIRECT;',
+      }
+
       apt::source { 'puppet-enterprise':
-        location => "https:/${::settings::server}:8140/packages/current/${agent}",
-        repos    => './',
+        location    => "https:/${::settings::server}:8140/packages/current/${agent}",
+        repos       => './',
+        include_src => false,
+        release     => '',     # release name not required
       }
 
       case $::architecture {
