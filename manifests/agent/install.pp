@@ -1,10 +1,12 @@
-# Profile to be applied to all roles to manage Puppet agent install.
+# Profile to be applied to all roles to manage Puppet agent install/upgrade.
 # Note: source and version variables must be stored in osfamily hieradata
 # (aharden@te.com)
 class te_puppet::agent::install (
   $source = undef,
   $version = undef,
   ) {
+  $master = $::settings::server
+
   # build agent string
   # reference: https://docs.puppetlabs.com/pe/latest/install_agents.html#about-the-platform-specific-install-script
   $myoperatingsystem = downcase($::operatingsystem)
@@ -30,11 +32,11 @@ class te_puppet::agent::install (
 
       apt::conf { 'puppet-enterprise':
         priority => '90',
-        content  => 'Acquire::https::pptappp05.tycoelectronics.net::Verify-Peer false;\nAcquire::http::Proxy::pptappp05.tycoelectronics.net DIRECT;',
+        content  => template("${module_name}/agent/apt.conf.erb"),
       }
 
       apt::source { 'puppet-enterprise':
-        location    => "https:/${::settings::server}:8140/packages/current/${agent}",
+        location    => "https:/${master}:8140/packages/current/${agent}",
         repos       => './',
         include_src => false,
         release     => '',     # release name not required
