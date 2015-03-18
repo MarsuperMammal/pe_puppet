@@ -36,7 +36,7 @@ class te_puppet::agent::install (
       }
 
       apt::source { 'puppet-enterprise':
-        location    => "https:/${master}:8140/packages/current/${agent}",
+        location    => "https://${master}:8140/packages/current/${agent}",
         repos       => './',
         include_src => false,
         release     => '',     # release name not required
