@@ -35,4 +35,24 @@ class te_puppet::db (
   cron { 'Full DB backup':
     command => "/opt/puppet/bin/pg_dumpall -f ${bkup_folder}dumpall.backup",
   }
+  cron { 'Console DB backup':
+    ensure  => absent,
+    command => "/opt/puppet/bin/pg_dump -Fc -C -c console -f ${bkup_folder}console.backup",
+  }
+  cron { 'Activity DB backup':
+    ensure  => absent,
+    command => "/opt/puppet/bin/pg_dump -Fc -C -c pe-activity -f ${bkup_folder}pe-activity.backup",
+  }
+  cron { 'Classifier DB backup':
+    ensure  => absent,
+    command => "/opt/puppet/bin/pg_dump -Fc -C -c pe-classifier -f ${bkup_folder}pe-classifier.backup",
+  }
+  cron { 'RBAC DB backup':
+    ensure  => absent,
+    command => "/opt/puppet/bin/pg_dump -Fc -C -c pe-rbac -f ${bkup_folder}pe-rbac.backup",
+  }
+  cron { 'PuppetDB backup':
+    ensure  => absent,
+    command => "/opt/puppet/bin/pg_dump -Fc -C -c pe-puppetdb -f ${bkup_folder}pe-puppetdb.backup",
+  }
 }
