@@ -45,12 +45,6 @@ class te_puppet::master (
     notify => Service['pe-puppetserver'],
   }
 
-  file { 'Symlink to puppet bin for r10k use':
-    ensure => link,
-    target => '/opt/puppet/bin/puppet',
-    path   => '/usr/bin/puppet',
-  }
-
   if $r10k_frequency {
     cron { 'r10k deploy runs':
       ensure  => present,
