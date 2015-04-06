@@ -11,6 +11,15 @@ class te_puppet::master (
   include ::r10k::webhook::config
   Class['::r10k::webhook::config'] -> Class['::r10k::webhook']
 
+  $proxy_url  = $::profiles::base::network::proxy_url
+  $proxy_port = $::profiles::base::network::proxy_port
+
+  File {
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+  }
+
   Ini_setting {
     ensure  => present,
     path    => '/etc/puppetlabs/puppet/puppet.conf',
@@ -39,10 +48,13 @@ class te_puppet::master (
   file { $settings::hiera_config:
     ensure => file,
     source => "puppet:///modules/${module_name}/hiera.yaml",
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
     notify => Service['pe-puppetserver'],
+  }
+
+  # /root/.curlrc w/proxy fixes pe_repo download issues
+  file { '/root/.curlrc':
+    ensure  => file,
+    content => template("${module_name}/curlrc.erb"),
   }
 
   if $r10k_frequency {
