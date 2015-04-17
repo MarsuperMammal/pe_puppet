@@ -3,7 +3,7 @@
 class te_puppet::db (
   $bkup_folder = '/tmp/',
   $bkup_hours = ['1'], # which hours to back up at daily
-) {
+) inherits te_puppet {
   Cron {
     ensure => present,
     user   => 'pe-postgres',
