@@ -4,7 +4,7 @@
 #   use te_puppet::master::ca or te_puppet::master::compile profiles
 class te_puppet::master (
   $r10k_frequency = undef,
-) {
+) inherits te_puppet {
   include ::r10k
   include ::r10k::mcollective
   include ::r10k::webhook

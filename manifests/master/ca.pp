@@ -24,15 +24,6 @@ class te_puppet::master::ca (
     notify => Service['pe-puppetserver'],
   }
 
-# removed due to conflict in PE 3.7
-#  file { "${::settings::confdir}/fileserver.conf":
-#    ensure => file,
-#    source => "puppet:///modules/${module_name}/puppet-ca/fileserver.conf",
-#    owner  => 'root',
-#    group  => 'pe-puppet',
-#    mode   => '0644',
-#  }
-
   cron { 'export certlist to file':
     ensure  => present,
     command => ". /root/.bashrc; /usr/local/bin/puppet cert list --all > ${certlist_file}",

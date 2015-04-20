@@ -4,7 +4,7 @@ class te_puppet::console (
   $console_db_pwd,
   $dashboard_workers = '2', # default number of dashboard workers
   $db_host = 'localhost',
-) {
+) inherits te_puppet {
   File {
     owner  => 'pe-auth',
     group  => 'puppet-dashboard',

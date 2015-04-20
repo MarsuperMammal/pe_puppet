@@ -3,25 +3,13 @@
 class te_puppet::db (
   $bkup_folder = '/tmp/',
   $bkup_hours = ['1'], # which hours to back up at daily
-) {
+) inherits te_puppet {
   Cron {
     ensure => present,
     user   => 'pe-postgres',
     hour   => $bkup_hours,
     minute => '0',
   }
-
-# cleaning up after abandoned backups from old code
-  File {
-    ensure => 'absent',
-  }
-
-  file { "${bkup_folder}console.backup":}
-  file { "${bkup_folder}pe-activity.backup":}
-  file { "${bkup_folder}pe-classifier.backup":}
-  file { "${bkup_folder}pe-puppetdb.backup":}
-  file { "${bkup_folder}pe-rbac.backup":}
-# end cleaning up (remove in next version)
 
   file { $bkup_folder:
     ensure => 'directory',
