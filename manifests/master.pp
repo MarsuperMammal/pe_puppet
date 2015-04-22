@@ -3,6 +3,8 @@
 # don't apply directly to roles:
 #   use te_puppet::master::ca or te_puppet::master::compile profiles
 class te_puppet::master (
+  $proxy_port,
+  $proxy_url,
   $r10k_frequency = undef,
 ) inherits te_puppet {
   include ::limits
@@ -11,9 +13,6 @@ class te_puppet::master (
   include ::r10k::webhook
   include ::r10k::webhook::config
   Class['::r10k::webhook::config'] -> Class['::r10k::webhook']
-
-  $proxy_url  = $::profiles::base::network::proxy_url
-  $proxy_port = $::profiles::base::network::proxy_port
 
   File {
     owner  => 'root',
