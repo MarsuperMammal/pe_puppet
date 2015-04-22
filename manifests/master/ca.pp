@@ -3,7 +3,6 @@ class te_puppet::master::ca (
   $certlist_file,
   $certlist_frequency,
 ) {
-  include ::limits
   include ::te_puppet::master
 
   ini_setting { 'Enable autosigning':
