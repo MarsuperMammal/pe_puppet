@@ -1,5 +1,5 @@
 # profile to be applied to all roles to manage Puppet agent
-class pe_puppet::agent (
+class pw_puppet::agent (
   $server,              # Puppet Master
   $ca_server,           # Puppet Certificate Authority (CA)
   $archive_file_server, # Puppet archive file server

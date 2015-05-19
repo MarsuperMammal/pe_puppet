@@ -1,6 +1,6 @@
 # profile to include on Puppet Enterprise masters acting as CA (aharden@te.com)
-class pe_puppet::master::ca {
-  include ::pe_puppet::master
+class pw_puppet::master::ca {
+  include ::pw_puppet::master
 
   ini_setting { 'Enable autosigning':
     ensure  => present,

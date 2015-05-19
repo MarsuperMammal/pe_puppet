@@ -1,7 +1,7 @@
 # a class for servers with the Puppet Enterprise master role installed
 # don't apply directly to roles:
 #   use te_puppet::master::ca or te_puppet::master::compile profiles
-class pe_puppet::master {
+class pw_puppet::master {
   include ::limits
   include ::r10k
   include ::r10k::mcollective

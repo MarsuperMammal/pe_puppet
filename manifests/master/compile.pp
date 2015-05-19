@@ -1,6 +1,6 @@
 # profile to apply to Puppet Enterprise masters not acting as a CA
 # PE 3.7: https://docs.puppetlabs.com/pe/latest/install_multimaster.html
-class pe_puppet::master::compile {
+class pw_puppet::master::compile {
 
   File {
     ensure => file,

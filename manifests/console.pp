@@ -1,8 +1,8 @@
 # profile to be applied to Puppet Enterprise Console servers
-class pe_puppet::console (
+class pw_puppet::console (
   $dashboard_workers = '2', # default number of dashboard workers
   $db_host = 'localhost',
-) inherits pe_puppet {
+) inherits pw_puppet {
   File {
     owner  => 'pe-auth',
     group  => 'puppet-dashboard',
