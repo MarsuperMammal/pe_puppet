@@ -1,6 +1,5 @@
 # profile to be applied to Puppet Enterprise Console servers
 class pe_puppet::console (
-  $console_db_pwd = 'strongpassword1748',
   $dashboard_workers = '2', # default number of dashboard workers
   $db_host = 'localhost',
 ) inherits pe_puppet {
