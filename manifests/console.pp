@@ -1,10 +1,9 @@
-# profile to be applied to Puppet Enterprise Console servers (aharden@te.com)
-# puppetversion case can be removed after decom of PE 3.3.2
-class te_puppet::console (
+# profile to be applied to Puppet Enterprise Console servers
+class pe_puppet::console (
   $console_db_pwd,
   $dashboard_workers = '2', # default number of dashboard workers
   $db_host = 'localhost',
-) inherits te_puppet {
+) inherits pe_puppet {
   File {
     owner  => 'pe-auth',
     group  => 'puppet-dashboard',

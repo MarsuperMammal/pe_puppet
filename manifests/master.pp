@@ -1,12 +1,7 @@
 # a class for servers with the Puppet Enterprise master role installed
-# Alex Harden (aharden@te.com)
 # don't apply directly to roles:
 #   use te_puppet::master::ca or te_puppet::master::compile profiles
-class te_puppet::master (
-  $proxy_port,
-  $proxy_url,
-  $r10k_frequency = undef,
-) inherits te_puppet {
+class pe_puppet::master {
   include ::limits
   include ::r10k
   include ::r10k::mcollective
@@ -49,20 +44,5 @@ class te_puppet::master (
     ensure => file,
     source => "puppet:///modules/${module_name}/hiera.yaml",
     notify => Service['pe-puppetserver'],
-  }
-
-  # /root/.curlrc w/proxy fixes pe_repo download issues
-  file { '/root/.curlrc':
-    ensure  => file,
-    content => template("${module_name}/curlrc.erb"),
-  }
-
-  if $r10k_frequency {
-    cron { 'r10k deploy runs':
-      ensure  => present,
-      command => '. /root/.bashrc; /usr/bin/r10k deploy environment -pv',
-      user    => 'root',
-      minute  => "*/${r10k_frequency}",
-    }
   }
 }

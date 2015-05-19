@@ -1,4 +1,10 @@
-te_puppet
+pe_puppet
 =========
 
-Code that manages TE's Puppet Enterprise servers and agents.
+Bootstraping code for Puppet Enterprise
+
+Contributors:
+Phil Watts (pwatts217@gmail.com)
+Alex Harden (aharden@te.com)
+
+

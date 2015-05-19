@@ -1,19 +1,12 @@
-# profile to be applied to all roles to manage Puppet agent (aharden@te.com)
-class te_puppet::agent (
+# profile to be applied to all roles to manage Puppet agent
+class pe_puppet::agent (
   $server,              # Puppet Master
   $ca_server,           # Puppet Certificate Authority (CA)
   $archive_file_server, # Puppet archive file server
   $ensure = 'running',  # default state of agent service
   $enable = true,       # default startup of agent service
+  $confdir = '/etc/puppetlabs/puppet'
 ) {
-  #include te_puppet::agent::install
-
-  if $::osfamily == 'windows' {
-    $appdata = regsubst($::common_appdata,'\\','/','G')
-    $confdir = "${appdata}/PuppetLabs/puppet/etc"
-  } else {
-    $confdir = '/etc/puppetlabs/puppet'
-  }
 
   Ini_setting {
     ensure  => present,

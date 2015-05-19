@@ -1,9 +1,9 @@
 # profile to include on Puppet Enterprise masters acting as CA (aharden@te.com)
-class te_puppet::master::ca (
+class pe_puppet::master::ca (
   $certlist_file,
   $certlist_frequency,
 ) {
-  include ::te_puppet::master
+  include ::pe_puppet::master
 
   ini_setting { 'Enable autosigning':
     ensure  => present,
@@ -21,12 +21,5 @@ class te_puppet::master::ca (
     group  => 'pe-puppet',
     mode   => '0640',
     notify => Service['pe-puppetserver'],
-  }
-
-  cron { 'export certlist to file':
-    ensure  => present,
-    command => ". /root/.bashrc; /usr/local/bin/puppet cert list --all > ${certlist_file}",
-    user    => 'root',
-    minute  => "*/${certlist_frequency}",
   }
 }
