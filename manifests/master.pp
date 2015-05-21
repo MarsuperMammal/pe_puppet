@@ -30,14 +30,19 @@ class pw_puppet::master {
     default: {}
   }
 
+  ini_setting { 'puppet configration dir path':
+    setting => 'confdir',
+    value   => '/etc/puppetlabs/puppet',
+  }
+
   ini_setting { 'puppet base module path':
     setting => 'basemodulepath',
-    value   => '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules',
+    value   => '$confdir/modules:/opt/puppet/share/puppet/modules',
   }
 
   ini_setting { 'puppet environment path':
     setting => 'environmentpath',
-    value   => '/etc/puppetlabs/puppet/environments',
+    value   => '$confdir/environments',
   }
 
   file { $settings::hiera_config:
