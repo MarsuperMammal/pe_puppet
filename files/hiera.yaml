@@ -2,11 +2,11 @@
 :backends:
   - yaml
   - eyaml
+
 :hierarchy:
   - common
 
 :yaml:
-# When specifying a datadir, make sure the directory exists.
   :datadir: "/etc/puppetlabs/puppet/environments/%{::environment}/hieradata/yaml"
 
 :eyaml:
