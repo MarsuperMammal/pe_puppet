@@ -3,9 +3,7 @@
   - yaml
   - eyaml
 :hierarchy:
-  - "nodes/%{clientcert}"
-  - "osfamilies/%{osfamily}"
-  - "common"
+  - common
 
 :yaml:
 # When specifying a datadir, make sure the directory exists.
@@ -13,5 +11,5 @@
 
 :eyaml:
   :datadir: "/etc/puppetlabs/puppet/environments/%{::environment}/hieradata/eyaml"
-  :pkcs7_private_key: "/etc/puppetlabs/puppet/secure/keys/private_key.pkcs7.pem"
-  :pkcs7_public_key: "/etc/puppetlabs/puppet/secure/keys/public_key.pkcs7.pem"
+  :pkcs7_private_key: /etc/puppetlabs/puppet/secure/keys/private_key.pkcs7.pem
+  :pkcs7_public_key: /etc/puppetlabs/puppet/secure/keys/public_key.pkcs7.pem
