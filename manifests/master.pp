@@ -50,4 +50,5 @@ class pw_puppet::master {
     source => "puppet:///modules/${module_name}/hiera.yaml",
     notify => Service['pe-puppetserver'],
   }
+
 }
